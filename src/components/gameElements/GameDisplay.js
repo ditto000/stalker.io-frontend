@@ -23,6 +23,7 @@ class GameDisplay extends Component {
       },
     };
   }
+  updateSetInterval = null;
   handleResize = (e) => {
     this.setState({
       windowWidth: window.innerWidth,
@@ -36,7 +37,7 @@ class GameDisplay extends Component {
     };
     p.setup = () => {
       p.createCanvas(this.state.windowWidth, this.state.windowHeight);
-      // p.frameRate(120);
+      p.frameRate(120);
     };
     p.draw = () => {
       p.resizeCanvas(this.state.windowWidth, this.state.windowHeight);
@@ -133,11 +134,12 @@ class GameDisplay extends Component {
   componentDidMount() {
     this.myP5 = new p5(this.Sketch, this.canvasRef.current);
     window.addEventListener('resize', this.handleResize);
-    setInterval(this.updatePos, 10);
+    this.updateSetInterval = setInterval(this.updatePos, 10);
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize);
+    clearInterval(this.updateSetInterval);
   }
 
   render() {
