@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import p5 from 'p5';
 import vision from './Vision.png';
 import drawBackground from './DrawBackground';
+import { connect } from 'react-redux';
+import { updateResolution } from '../../actions';
 
 class GameDisplay extends Component {
   constructor(props) {
@@ -9,12 +11,12 @@ class GameDisplay extends Component {
 
     this.canvasRef = React.createRef();
     this.state = {
-      windowWidth: window.innerWidth,
-      windowHeight: window.innerHeight,
+      // windowWidth: window.innerWidth,
+      // windowHeight: window.innerHeight,
       playerLen: 50,
       playerX: 0,
       playerY: 0,
-      visionWidth: window.innerHeight,
+      // visionWidth: window.innerHeight,
       keysDown: {
         w: false,
         a: false,
@@ -25,26 +27,31 @@ class GameDisplay extends Component {
   }
   updateSetInterval = null;
   handleResize = (e) => {
-    this.setState({
-      windowWidth: window.innerWidth,
-      windowHeight: window.innerHeight,
+    this.props.updateResolution({
+      width: window.innerWidth,
+      height: window.innerHeight,
       visionWidth: window.innerHeight,
     });
+    // this.setState({
+    //   windowWidth: window.innerWidth,
+    //   windowHeight: window.innerHeight,
+    //   visionWidth: window.innerHeight,
+    // });
   };
   Sketch = (p) => {
     p.preload = () => {
       this.img = p.loadImage(vision);
     };
     p.setup = () => {
-      p.createCanvas(this.state.windowWidth, this.state.windowHeight);
+      p.createCanvas(this.props.res.width, this.props.res.height);
       p.frameRate(120);
     };
     p.draw = () => {
-      p.resizeCanvas(this.state.windowWidth, this.state.windowHeight);
+      p.resizeCanvas(this.props.res.width, this.props.res.height);
       drawBackground(
         p,
         this.state.playerLen,
-        this.state.visionWidth,
+        this.props.visionWidth,
         this.state.playerX,
         this.state.playerY
       );
@@ -52,17 +59,17 @@ class GameDisplay extends Component {
       p.push();
       p.fill('blue');
       p.rect(
-        this.state.windowWidth / 2 - this.state.playerLen / 2,
-        this.state.windowHeight / 2 - this.state.playerLen / 2,
+        this.props.res.width / 2 - this.state.playerLen / 2,
+        this.props.res.height / 2 - this.state.playerLen / 2,
         this.state.playerLen
       );
       p.pop();
       p.image(
         this.img,
-        this.state.windowWidth / 2 - this.state.visionWidth / 2,
-        this.state.windowHeight / 2 - this.state.visionWidth / 2,
-        this.state.visionWidth,
-        this.state.visionWidth
+        this.props.res.width / 2 - this.props.visionWidth / 2,
+        this.props.res.height / 2 - this.props.visionWidth / 2,
+        this.props.visionWidth,
+        this.props.visionWidth
       );
       p.push();
       p.fill(0);
@@ -70,29 +77,29 @@ class GameDisplay extends Component {
       p.rect(
         0,
         0,
-        this.state.windowWidth,
-        this.state.windowHeight / 2 - this.state.visionWidth / 2
+        this.props.res.width,
+        this.props.res.height / 2 - this.props.visionWidth / 2
       );
       // Bottom black bar
       p.rect(
         0,
-        this.state.windowHeight / 2 + this.state.visionWidth / 2,
-        this.state.windowWidth,
-        this.state.windowHeight / 2 - this.state.visionWidth / 2
+        this.props.res.height / 2 + this.props.visionWidth / 2,
+        this.props.res.width,
+        this.props.res.height / 2 - this.props.visionWidth / 2
       );
       // Left black bar
       p.rect(
         0,
         0,
-        this.state.windowWidth / 2 - this.state.visionWidth / 2,
-        this.state.windowHeight
+        this.props.res.width / 2 - this.props.visionWidth / 2,
+        this.props.res.height
       );
       // Right black bar
       p.rect(
-        this.state.windowWidth / 2 + this.state.visionWidth / 2,
+        this.props.res.width / 2 + this.props.visionWidth / 2,
         0,
-        this.state.windowWidth / 2 - this.state.visionWidth / 2,
-        this.state.windowHeight
+        this.props.res.width / 2 - this.props.visionWidth / 2,
+        this.props.res.height
       );
       p.pop();
     };
@@ -125,13 +132,18 @@ class GameDisplay extends Component {
       this.setState({ playerX, playerY });
     }
   };
-  mouseMovePos = (e) => {
-    this.setState({
-      playerX: (e.clientX * 1000) / this.state.windowWidth,
-      playerY: (e.clientY * 1000) / this.state.windowHeight,
-    });
-  };
+  // mouseMovePos = (e) => {
+  //   this.setState({
+  //     playerX: (e.clientX * 1000) / this.props.res.width,
+  //     playerY: (e.clientY * 1000) / this.props.res.height,
+  //   });
+  // };
   componentDidMount() {
+    this.props.updateResolution({
+      width: window.innerWidth,
+      height: window.innerHeight,
+      visionWidth: window.innerHeight,
+    });
     this.myP5 = new p5(this.Sketch, this.canvasRef.current);
     window.addEventListener('resize', this.handleResize);
     this.updateSetInterval = setInterval(this.updatePos, 10);
@@ -157,4 +169,12 @@ class GameDisplay extends Component {
   }
 }
 
-export default GameDisplay;
+const mapStateToProps = (state) => {
+  // mapStoreToProps
+  return {
+    res: state.res,
+    visionWidth: state.visionWidth,
+  };
+};
+
+export default connect(mapStateToProps, { updateResolution })(GameDisplay);

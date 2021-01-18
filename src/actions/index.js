@@ -12,9 +12,9 @@ export const B = (payload) => {
   };
 };
 
-// export const resolution = (payload) => {
-//   return {
-//     type: 'RESOLUTION_UPDATE',
-//     payload,
-//   };
-// };
+export const updateResolution = (payload) => {
+  return {
+    type: 'UPDATE_RESOLUTION',
+    payload,
+  };
+};
