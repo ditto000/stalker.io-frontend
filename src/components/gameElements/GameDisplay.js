@@ -5,9 +5,19 @@ import drawBackground from './DrawBackground';
 import { connect } from 'react-redux';
 import { updateResolution } from '../../actions';
 
+import socket from '../socket';
+
 class GameDisplay extends Component {
   constructor(props) {
     super(props);
+
+    socket.on('gameUpdate', players => {
+      players.forEach(player => {
+        if(player.id === socket.id){
+          this.setState({playerX:player.pos.x, playerY:player.pos.y});
+        }
+      });
+    });
 
     this.canvasRef = React.createRef();
     this.state = {
@@ -112,9 +122,14 @@ class GameDisplay extends Component {
     } else if (e.type === 'keyup') {
       newKeysDownState[e.key] = false;
     }
+
     this.setState({ keysDown: newKeysDownState });
+
+    const dirX = this.state.keysDown.d - this.state.keysDown.a;
+    const dirY = this.state.keysDown.s - this.state.keysDown.w;
+    socket.emit('movement', {dirX:dirX, dirY:dirY});
   };
-  updatePos = () => {
+  /**updatePos = () => {
     let { playerX, playerY } = this.state;
     for (let i in this.state.keysDown) {
       if (i === 'w' && this.state.keysDown[i]) {
@@ -131,7 +146,7 @@ class GameDisplay extends Component {
       }
       this.setState({ playerX, playerY });
     }
-  };
+  };**/
   // mouseMovePos = (e) => {
   //   this.setState({
   //     playerX: (e.clientX * 1000) / this.props.res.width,
@@ -139,6 +154,8 @@ class GameDisplay extends Component {
   //   });
   // };
   componentDidMount() {
+    socket.emit('join', 'test');
+
     this.props.updateResolution({
       width: window.innerWidth,
       height: window.innerHeight,
@@ -146,7 +163,7 @@ class GameDisplay extends Component {
     });
     this.myP5 = new p5(this.Sketch, this.canvasRef.current);
     window.addEventListener('resize', this.handleResize);
-    this.updateSetInterval = setInterval(this.updatePos, 10);
+    //this.updateSetInterval = setInterval(this.updatePos, 10);
   }
 
   componentWillUnmount() {
