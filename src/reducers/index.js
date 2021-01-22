@@ -32,8 +32,18 @@ const updateVisionWidth = (state = 0, action) => {
   }
 };
 
+const updatePlayerWidth = (state = 0, action) => {
+  switch (action.type) {
+    case 'UPDATE_RESOLUTION':
+      return action.payload.playerWidth;
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   testElement: testReducer,
   res: updateResolution,
   visionWidth: updateVisionWidth,
+  playerWidth: updatePlayerWidth,
 });

@@ -1,14 +1,10 @@
-// import p5 from 'p5';
-import DummyMap from './DummyMap';
+// import DummyMap from './DummyMap';
+import DummyMap from './BigDummyMap';
 import RenderMapTile from './RenderMapTile';
 
-const drawBackground = (p, playerWidth, visionWidth, playerX, playerY) => {
+const drawBackground = (p, playerX, playerY) => {
   const xTile = Math.floor(playerX / 100);
   const yTile = Math.floor(playerY / 100);
-  // console.log(playerX + ',' + playerY);
-  // console.log(
-  //   Math.round(playerX) + ',' + Math.round(playerY) + ':' + xTile + ',' + yTile
-  // );
   p.background('black');
   let curMap = DummyMap;
   curMap.forEach((row, mapX) => {
@@ -16,15 +12,13 @@ const drawBackground = (p, playerWidth, visionWidth, playerX, playerY) => {
     row.forEach((mapElement, mapY) => {
       // console.log(xTile, yTile, mapX, mapY);
       if (
-        mapX <= xTile + 3 &&
-        mapX >= xTile - 3 &&
-        mapY <= yTile + 3 &&
-        mapY >= yTile - 3
+        mapX <= xTile + 12 &&
+        mapX >= xTile - 12 &&
+        mapY <= yTile + 12 &&
+        mapY >= yTile - 12
       ) {
         RenderMapTile(
           p,
-          visionWidth,
-          playerWidth,
           xTile - mapX,
           yTile - mapY,
           (playerX % 100) / 100,

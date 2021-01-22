@@ -1,8 +1,7 @@
+import store from '../../store';
 /**
  *
  * @param {*} p instance of p5.js
- * @param {*} visionWidth width of the vision square
- * @param {*} playerWidth width of the player
  * @param {*} relPosX relative x coordinate of tile
  * @param {*} relPosY relative y coordinate of tile
  * @param {*} offsetX x offset that tile should be rendered in as a percentage
@@ -11,8 +10,6 @@
  */
 const RenderMapTile = (
   p,
-  visionWidth,
-  playerWidth,
   relPosX,
   relPosY,
   // posX,
@@ -21,25 +18,23 @@ const RenderMapTile = (
   offsetY,
   tileType
 ) => {
-  const screenWidth = p.width;
-  const screenHeight = p.height;
-  const tileWidth = visionWidth / 5;
+  let { visionWidth, playerWidth, res } = store.getState();
+  const screenWidth = res.width;
+  const screenHeight = res.height;
+  const tileWidth = visionWidth / 10;
   const baseX = (screenWidth - playerWidth) / 2;
   const baseY = (screenHeight - playerWidth) / 2;
-  // const tileX = posX * (visionWidth / 5);
-  // const tileY = posY * (visionWidth / 5);
   p.push();
   switch (tileType) {
     case 0:
-      p.fill('red');
+      p.fill('grey');
       break;
     case 1:
-      p.fill('yellow');
+      p.fill('tan');
       break;
     default:
       p.fill('white');
   }
-  // p.rect(tileX - offsetX, tileY - offsetY, visionWidth / 5);
   p.noStroke();
   p.rect(
     baseX - relPosX * tileWidth - offsetX * tileWidth,

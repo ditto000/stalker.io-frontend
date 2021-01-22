@@ -13,12 +13,8 @@ class GameDisplay extends Component {
 
     this.canvasRef = React.createRef();
     this.state = {
-      // windowWidth: window.innerWidth,
-      // windowHeight: window.innerHeight,
-      playerLen: 50,
       playerX: 0,
       playerY: 0,
-      // visionWidth: window.innerHeight,
       keysDown: {
         w: false,
         a: false,
@@ -33,6 +29,7 @@ class GameDisplay extends Component {
       width: window.innerWidth,
       height: window.innerHeight,
       visionWidth: window.innerHeight,
+      playerWidth: window.innerHeight / 30,
     });
     // this.setState({
     //   windowWidth: window.innerWidth,
@@ -50,20 +47,14 @@ class GameDisplay extends Component {
     };
     p.draw = () => {
       p.resizeCanvas(this.props.res.width, this.props.res.height);
-      drawBackground(
-        p,
-        this.state.playerLen,
-        this.props.visionWidth,
-        this.state.playerX,
-        this.state.playerY
-      );
+      drawBackground(p, this.state.playerX, this.state.playerY);
       // Draws player
       p.push();
       p.fill('blue');
       p.rect(
-        this.props.res.width / 2 - this.state.playerLen / 2,
-        this.props.res.height / 2 - this.state.playerLen / 2,
-        this.state.playerLen
+        this.props.res.width / 2 - this.props.playerWidth / 2,
+        this.props.res.height / 2 - this.props.playerWidth / 2,
+        this.props.playerWidth
       );
       p.pop();
       p.image(
@@ -170,6 +161,7 @@ class GameDisplay extends Component {
       players.forEach((player) => {
         if (player.id === socket.id) {
           this.setState({ playerX: player.pos.x, playerY: player.pos.y });
+          console.log(this.state.playerX + ', ' + this.state.playerY);
         }
       });
     });
@@ -207,6 +199,7 @@ const mapStateToProps = (state) => {
   return {
     res: state.res,
     visionWidth: state.visionWidth,
+    playerWidth: state.playerWidth,
   };
 };
 
