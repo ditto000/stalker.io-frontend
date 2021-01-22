@@ -125,8 +125,27 @@ class GameDisplay extends Component {
 
     this.setState({ keysDown: newKeysDownState });
 
-    const dirX = this.state.keysDown.d - this.state.keysDown.a;
-    const dirY = this.state.keysDown.s - this.state.keysDown.w;
+    let dirX = 0;
+    let dirY = 0;
+    for (let element in newKeysDownState) {
+      switch (element) {
+        case 'w':
+          if (newKeysDownState.w) dirY--;
+          break;
+        case 'a':
+          if (newKeysDownState.a) dirX--;
+          break;
+        case 's':
+          if (newKeysDownState.s) dirY++;
+          break;
+        case 'd':
+          if (newKeysDownState.d) dirX++;
+          break;
+        default:
+          break;
+      }
+    }
+
     socket.emit('movement', { dirX: dirX, dirY: dirY });
   };
   /**updatePos = () => {
