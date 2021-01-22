@@ -11,10 +11,10 @@ class GameDisplay extends Component {
   constructor(props) {
     super(props);
 
-    socket.on('gameUpdate', players => {
-      players.forEach(player => {
-        if(player.id === socket.id){
-          this.setState({playerX:player.pos.x, playerY:player.pos.y});
+    socket.on('gameUpdate', (players) => {
+      players.forEach((player) => {
+        if (player.id === socket.id) {
+          this.setState({ playerX: player.pos.x, playerY: player.pos.y });
         }
       });
     });
@@ -127,7 +127,7 @@ class GameDisplay extends Component {
 
     const dirX = this.state.keysDown.d - this.state.keysDown.a;
     const dirY = this.state.keysDown.s - this.state.keysDown.w;
-    socket.emit('movement', {dirX:dirX, dirY:dirY});
+    socket.emit('movement', { dirX: dirX, dirY: dirY });
   };
   /**updatePos = () => {
     let { playerX, playerY } = this.state;
@@ -168,7 +168,9 @@ class GameDisplay extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize);
-    clearInterval(this.updateSetInterval);
+    this.myP5.remove();
+    socket.off();
+    // clearInterval(this.updateSetInterval);
   }
 
   render() {
