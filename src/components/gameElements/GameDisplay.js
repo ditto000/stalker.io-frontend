@@ -11,14 +11,6 @@ class GameDisplay extends Component {
   constructor(props) {
     super(props);
 
-    socket.on('gameUpdate', (players) => {
-      players.forEach((player) => {
-        if (player.id === socket.id) {
-          this.setState({ playerX: player.pos.x, playerY: player.pos.y });
-        }
-      });
-    });
-
     this.canvasRef = React.createRef();
     this.state = {
       // windowWidth: window.innerWidth,
@@ -174,12 +166,15 @@ class GameDisplay extends Component {
   // };
   componentDidMount() {
     socket.emit('join', 'test');
-
-    this.props.updateResolution({
-      width: window.innerWidth,
-      height: window.innerHeight,
-      visionWidth: window.innerHeight,
+    socket.on('gameUpdate', (players) => {
+      players.forEach((player) => {
+        if (player.id === socket.id) {
+          this.setState({ playerX: player.pos.x, playerY: player.pos.y });
+        }
+      });
     });
+
+    this.handleResize();
     this.myP5 = new p5(this.Sketch, this.canvasRef.current);
     window.addEventListener('resize', this.handleResize);
     //this.updateSetInterval = setInterval(this.updatePos, 10);
