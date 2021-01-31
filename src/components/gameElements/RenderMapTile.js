@@ -8,22 +8,12 @@ import store from '../../store';
  * @param {*} offsetY y offset that tile should be rendered in as a percentage
  * @param {*} tileType type of tile from the map
  */
-const RenderMapTile = (
-  p,
-  relPosX,
-  relPosY,
-  // posX,
-  // posY
-  offsetX,
-  offsetY,
-  tileType
-) => {
-  let { visionWidth, playerWidth, res } = store.getState();
-  const screenWidth = res.width;
-  const screenHeight = res.height;
-  const tileWidth = visionWidth / 10;
-  const baseX = (screenWidth - playerWidth) / 2;
-  const baseY = (screenHeight - playerWidth) / 2;
+const RenderMapTile = (p, relPosX, relPosY, offsetX, offsetY, tileType) => {
+  let { playerWidth, res, tileWidth } = store.getState();
+  // const screenWidth = res.width;
+  // const screenHeight = res.height;
+  const baseX = (res.width - playerWidth) / 2;
+  const baseY = (res.height - playerWidth) / 2;
   p.push();
   switch (tileType) {
     case 0:

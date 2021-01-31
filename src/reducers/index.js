@@ -41,6 +41,15 @@ const updatePlayerWidth = (state = 0, action) => {
   }
 };
 
+const updateTileWidth = (state = 0, action) => {
+  switch (action.type) {
+    case 'UPDATE_RESOLUTION':
+      return action.payload.visionWidth / 10;
+    default:
+      return state;
+  }
+};
+
 const updateKeyPositions = (
   state = { w: false, a: false, s: false, d: false },
   action
@@ -90,6 +99,7 @@ export default combineReducers({
   res: updateResolution,
   visionWidth: updateVisionWidth,
   playerWidth: updatePlayerWidth,
+  tileWidth: updateTileWidth,
   keysDown: updateKeyPositions,
   playerList: updatePlayerState,
   playerID: getPlayerID,

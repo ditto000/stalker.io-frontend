@@ -1,27 +1,23 @@
 import store from '../../store';
+import drawCharacter from './DrawCharacter';
 
 let drawEntities = (p) => {
   let { res, playerWidth, playerList, playerID } = store.getState();
+  const baseX = (res.width - playerWidth) / 2;
+  const baseY = (res.height - playerWidth) / 2;
   // Draws player
   p.push();
   p.fill('blue');
-  p.rect(
-    res.width / 2 - playerWidth / 2,
-    res.height / 2 - playerWidth / 2,
-    playerWidth
-  );
+  p.rect(baseX, baseY, playerWidth);
   p.pop();
+  // let curTileX = Math.floor(playerPos.playerX / 100);
+  // let curTileY = Math.floor(playerPos.playerY / 100);
+  // let curTileOffsetX = playerPos.playerX % 100;
+  // let curTileOffsetY = playerPos.playerY % 100;
+  // display other entities
   playerList.forEach((player) => {
-    // display other entities
     if (player.id !== playerID) {
-      p.push();
-      p.fill('cyan');
-      p.rect(
-        res.width / 2 - playerWidth / 2 + player.pos.x,
-        res.height / 2 - playerWidth / 2 + player.pos.y,
-        playerWidth
-      );
-      p.pop();
+      drawCharacter(p, player.pos.x, player.pos.y);
     }
   });
 };
