@@ -26,7 +26,7 @@ class GameDisplay extends Component {
       width: window.innerWidth,
       height: window.innerHeight,
       visionWidth: window.innerHeight,
-      playerWidth: window.innerHeight / 30,
+      playerWidth: window.innerHeight / 20,
     });
   };
   Sketch = (p) => {
