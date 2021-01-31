@@ -1,8 +1,11 @@
 // import DummyMap from './DummyMap';
 import DummyMap from './BigDummyMap';
 import RenderMapTile from './RenderMapTile';
+import store from '../../store';
 
-const drawBackground = (p, playerX, playerY) => {
+const drawBackground = (p) => {
+  let { playerPos } = store.getState();
+  let { playerX, playerY } = playerPos;
   const xTile = Math.floor(playerX / 100);
   const yTile = Math.floor(playerY / 100);
   p.background('black');
