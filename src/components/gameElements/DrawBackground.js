@@ -11,9 +11,7 @@ const drawBackground = (p) => {
   p.background('black');
   let curMap = DummyMap;
   curMap.forEach((row, mapX) => {
-    // console.log(mapX);
     row.forEach((mapElement, mapY) => {
-      // console.log(xTile, yTile, mapX, mapY);
       if (
         mapX <= xTile + 12 &&
         mapX >= xTile - 12 &&

@@ -10,10 +10,6 @@ let drawEntities = (p) => {
   p.fill('blue');
   p.rect(baseX, baseY, playerWidth);
   p.pop();
-  // let curTileX = Math.floor(playerPos.playerX / 100);
-  // let curTileY = Math.floor(playerPos.playerY / 100);
-  // let curTileOffsetX = playerPos.playerX % 100;
-  // let curTileOffsetY = playerPos.playerY % 100;
   // display other entities
   playerList.forEach((player) => {
     if (player.id !== playerID) {

@@ -19,16 +19,6 @@ class GameDisplay extends Component {
     super(props);
 
     this.canvasRef = React.createRef();
-    // this.state = {
-    //   playerX: 0,
-    //   playerY: 0,
-    //   keysDown: {
-    //     w: false,
-    //     a: false,
-    //     s: false,
-    //     d: false,
-    //   },
-    // };
   }
   updateSetInterval = null;
   handleResize = (e) => {
@@ -38,11 +28,6 @@ class GameDisplay extends Component {
       visionWidth: window.innerHeight,
       playerWidth: window.innerHeight / 30,
     });
-    // this.setState({
-    //   windowWidth: window.innerWidth,
-    //   windowHeight: window.innerHeight,
-    //   visionWidth: window.innerHeight,
-    // });
   };
   Sketch = (p) => {
     p.preload = () => {
@@ -54,7 +39,7 @@ class GameDisplay extends Component {
     };
     p.draw = () => {
       p.resizeCanvas(this.props.res.width, this.props.res.height);
-      drawBackground(p); //, this.state.playerX, this.state.playerY);
+      drawBackground(p);
       drawEntities(p);
       p.image(
         this.img,
@@ -98,70 +83,19 @@ class GameDisplay extends Component {
   };
 
   checkKeyEvents = (e) => {
-    // let newKeysDownState = { ...this.state.keysDown };
     if (e.type === 'keydown') {
-      // newKeysDownState[e.key] = true;
       this.props.updateKeyPositions({
         key: e.key,
         pressed: true,
       });
     } else if (e.type === 'keyup') {
-      // newKeysDownState[e.key] = false;
       this.props.updateKeyPositions({
         key: e.key,
         pressed: false,
       });
     }
     updateMovement();
-    // this.setState({ keysDown: newKeysDownState });
-
-    // let dirX = 0;
-    // let dirY = 0;
-    // for (let element in newKeysDownState) {
-    //   switch (element) {
-    //     case 'w':
-    //       if (newKeysDownState.w) dirY--;
-    //       break;
-    //     case 'a':
-    //       if (newKeysDownState.a) dirX--;
-    //       break;
-    //     case 's':
-    //       if (newKeysDownState.s) dirY++;
-    //       break;
-    //     case 'd':
-    //       if (newKeysDownState.d) dirX++;
-    //       break;
-    //     default:
-    //       break;
-    //   }
-    // }
-
-    // socket.emit('movement', { dirX: dirX, dirY: dirY });
   };
-  /**updatePos = () => {
-    let { playerX, playerY } = this.state;
-    for (let i in this.props.keysDown) {
-      if (i === 'w' && this.props.keysDown[i]) {
-        playerY -= 5;
-      }
-      if (i === 's' && this.props.keysDown[i]) {
-        playerY += 5;
-      }
-      if (i === 'a' && this.props.keysDown[i]) {
-        playerX -= 5;
-      }
-      if (i === 'd' && this.props.keysDown[i]) {
-        playerX += 5;
-      }
-      this.setState({ playerX, playerY });
-    }
-  };**/
-  // mouseMovePos = (e) => {
-  //   this.setState({
-  //     playerX: (e.clientX * 1000) / this.props.res.width,
-  //     playerY: (e.clientY * 1000) / this.props.res.height,
-  //   });
-  // };
   componentDidMount() {
     socket.emit('join', 'test');
     socket.on('gameUpdate', (players) => {
@@ -172,7 +106,6 @@ class GameDisplay extends Component {
             playerX: player.pos.x,
             playerY: player.pos.y,
           });
-          // console.log(this.state.playerX + ', ' + this.state.playerY);
         }
       });
     });
@@ -180,14 +113,12 @@ class GameDisplay extends Component {
     this.handleResize();
     this.myP5 = new p5(this.Sketch, this.canvasRef.current);
     window.addEventListener('resize', this.handleResize);
-    //this.updateSetInterval = setInterval(this.updatePos, 10);
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize);
     this.myP5.remove();
     socket.off();
-    // clearInterval(this.updateSetInterval);
   }
 
   render() {
@@ -197,7 +128,6 @@ class GameDisplay extends Component {
           ref={this.canvasRef}
           onKeyDown={this.checkKeyEvents}
           onKeyUp={this.checkKeyEvents}
-          // onMouseMove={this.mouseMovePos}
           tabIndex={0}
         />
       </div>
@@ -206,7 +136,6 @@ class GameDisplay extends Component {
 }
 
 const mapStateToProps = (state) => {
-  // mapStoreToProps
   return {
     res: state.res,
     visionWidth: state.visionWidth,

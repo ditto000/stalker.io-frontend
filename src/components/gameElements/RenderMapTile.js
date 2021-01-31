@@ -10,8 +10,6 @@ import store from '../../store';
  */
 const RenderMapTile = (p, relPosX, relPosY, offsetX, offsetY, tileType) => {
   let { playerWidth, res, tileWidth } = store.getState();
-  // const screenWidth = res.width;
-  // const screenHeight = res.height;
   const baseX = (res.width - playerWidth) / 2;
   const baseY = (res.height - playerWidth) / 2;
   p.push();
@@ -29,7 +27,7 @@ const RenderMapTile = (p, relPosX, relPosY, offsetX, offsetY, tileType) => {
   p.rect(
     baseX - relPosX * tileWidth - offsetX * tileWidth,
     baseY - relPosY * tileWidth - offsetY * tileWidth,
-    tileWidth
+    tileWidth + 1
   );
   p.pop();
 };
