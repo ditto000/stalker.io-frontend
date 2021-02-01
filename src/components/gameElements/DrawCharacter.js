@@ -6,7 +6,7 @@ let drawCharacter = (p, playerx, playery) => {
   let [x, y] = WorldToScreen(playerx, playery);
   p.push();
   p.fill('cyan');
-  p.rect(x, y, playerWidth);
+  p.rect(otherX, otherY, playerWidth);
   p.pop();
 };
 

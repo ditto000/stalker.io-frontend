@@ -4,8 +4,10 @@ import { WorldToScreen } from './2DCamera';
 /**
  *
  * @param {*} p instance of p5.js
- * @param {*} tileX map x of tile
- * @param {*} tileY map y of tile
+ * @param {*} relPosX relative x coordinate of tile
+ * @param {*} relPosY relative y coordinate of tile
+ * @param {*} offsetX x offset that tile should be rendered in as a percentage
+ * @param {*} offsetY y offset that tile should be rendered in as a percentage
  * @param {*} tileType type of tile from the map
  */
 const RenderMapTile = (p, tileCol, tileRow, tileType) => {
