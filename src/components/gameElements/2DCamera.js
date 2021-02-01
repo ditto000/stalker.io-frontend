@@ -25,5 +25,3 @@ const WorldToScreen = (worldX, worldY) => [
 ];
 
 export { SetCameraCenter, ScreenToWorld, WorldToScreen };
-
-// scale = R/r
