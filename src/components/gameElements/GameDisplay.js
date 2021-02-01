@@ -3,42 +3,30 @@ import p5 from 'p5';
 import vision from './Vision.png';
 import drawBackground from './DrawBackground';
 import { connect } from 'react-redux';
-import { updateResolution } from '../../actions';
+import {
+  updateResolution,
+  updateKeyPositions,
+  updatePlayerList,
+  updatePlayerLocation,
+} from '../../actions';
+import updateMovement from './Movement';
+// import { ScreenToWorld } from './2DCamera';
 
 import socket from '../socket';
+import drawEntities from './DrawEntites';
 
 class GameDisplay extends Component {
   constructor(props) {
     super(props);
 
     this.canvasRef = React.createRef();
-    this.state = {
-      // windowWidth: window.innerWidth,
-      // windowHeight: window.innerHeight,
-      playerLen: 50,
-      playerX: 0,
-      playerY: 0,
-      // visionWidth: window.innerHeight,
-      keysDown: {
-        w: false,
-        a: false,
-        s: false,
-        d: false,
-      },
-    };
   }
   updateSetInterval = null;
   handleResize = (e) => {
     this.props.updateResolution({
       width: window.innerWidth,
       height: window.innerHeight,
-      visionWidth: window.innerHeight,
     });
-    // this.setState({
-    //   windowWidth: window.innerWidth,
-    //   windowHeight: window.innerHeight,
-    //   visionWidth: window.innerHeight,
-    // });
   };
   Sketch = (p) => {
     p.preload = () => {
@@ -50,22 +38,8 @@ class GameDisplay extends Component {
     };
     p.draw = () => {
       p.resizeCanvas(this.props.res.width, this.props.res.height);
-      drawBackground(
-        p,
-        this.state.playerLen,
-        this.props.visionWidth,
-        this.state.playerX,
-        this.state.playerY
-      );
-      // Draws player
-      p.push();
-      p.fill('blue');
-      p.rect(
-        this.props.res.width / 2 - this.state.playerLen / 2,
-        this.props.res.height / 2 - this.state.playerLen / 2,
-        this.state.playerLen
-      );
-      p.pop();
+      drawBackground(p);
+      drawEntities(p);
       p.image(
         this.img,
         this.props.res.width / 2 - this.props.visionWidth / 2,
@@ -108,68 +82,29 @@ class GameDisplay extends Component {
   };
 
   checkKeyEvents = (e) => {
-    let newKeysDownState = { ...this.state.keysDown };
     if (e.type === 'keydown') {
-      newKeysDownState[e.key] = true;
+      this.props.updateKeyPositions({
+        key: e.key,
+        pressed: true,
+      });
     } else if (e.type === 'keyup') {
-      newKeysDownState[e.key] = false;
+      this.props.updateKeyPositions({
+        key: e.key,
+        pressed: false,
+      });
     }
-
-    this.setState({ keysDown: newKeysDownState });
-
-    let dirX = 0;
-    let dirY = 0;
-    for (let element in newKeysDownState) {
-      switch (element) {
-        case 'w':
-          if (newKeysDownState.w) dirY--;
-          break;
-        case 'a':
-          if (newKeysDownState.a) dirX--;
-          break;
-        case 's':
-          if (newKeysDownState.s) dirY++;
-          break;
-        case 'd':
-          if (newKeysDownState.d) dirX++;
-          break;
-        default:
-          break;
-      }
-    }
-
-    socket.emit('movement', { dirX: dirX, dirY: dirY });
+    updateMovement();
   };
-  /**updatePos = () => {
-    let { playerX, playerY } = this.state;
-    for (let i in this.state.keysDown) {
-      if (i === 'w' && this.state.keysDown[i]) {
-        playerY -= 5;
-      }
-      if (i === 's' && this.state.keysDown[i]) {
-        playerY += 5;
-      }
-      if (i === 'a' && this.state.keysDown[i]) {
-        playerX -= 5;
-      }
-      if (i === 'd' && this.state.keysDown[i]) {
-        playerX += 5;
-      }
-      this.setState({ playerX, playerY });
-    }
-  };**/
-  // mouseMovePos = (e) => {
-  //   this.setState({
-  //     playerX: (e.clientX * 1000) / this.props.res.width,
-  //     playerY: (e.clientY * 1000) / this.props.res.height,
-  //   });
-  // };
   componentDidMount() {
     socket.emit('join', 'test');
     socket.on('gameUpdate', (players) => {
+      this.props.updatePlayerList(players);
       players.forEach((player) => {
         if (player.id === socket.id) {
-          this.setState({ playerX: player.pos.x, playerY: player.pos.y });
+          this.props.updatePlayerLocation({
+            playerX: player.pos.x,
+            playerY: player.pos.y,
+          });
         }
       });
     });
@@ -177,15 +112,16 @@ class GameDisplay extends Component {
     this.handleResize();
     this.myP5 = new p5(this.Sketch, this.canvasRef.current);
     window.addEventListener('resize', this.handleResize);
-    //this.updateSetInterval = setInterval(this.updatePos, 10);
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize);
     this.myP5.remove();
     socket.off();
-    // clearInterval(this.updateSetInterval);
   }
+  // testScreenToWorld = (e) => {
+  //   console.log(ScreenToWorld(e.pageX, e.pageY));
+  // };
 
   render() {
     return (
@@ -194,7 +130,7 @@ class GameDisplay extends Component {
           ref={this.canvasRef}
           onKeyDown={this.checkKeyEvents}
           onKeyUp={this.checkKeyEvents}
-          // onMouseMove={this.mouseMovePos}
+          // onMouseDown={this.testScreenToWorld}
           tabIndex={0}
         />
       </div>
@@ -203,11 +139,19 @@ class GameDisplay extends Component {
 }
 
 const mapStateToProps = (state) => {
-  // mapStoreToProps
   return {
     res: state.res,
     visionWidth: state.visionWidth,
+    playerWidth: state.playerWidth,
+    keysDown: state.keysDown,
+    playerList: state.playerList,
+    playerPos: state.playerPos,
   };
 };
 
-export default connect(mapStateToProps, { updateResolution })(GameDisplay);
+export default connect(mapStateToProps, {
+  updateResolution,
+  updateKeyPositions,
+  updatePlayerList,
+  updatePlayerLocation,
+})(GameDisplay);

@@ -1,36 +1,29 @@
-// import p5 from 'p5';
-import DummyMap from './DummyMap';
+// import DummyMap from './DummyMap';
+import DummyMap from './BigDummyMap';
 import RenderMapTile from './RenderMapTile';
+import { SetCameraCenter } from './2DCamera';
+import store from '../../store';
 
-const drawBackground = (p, playerWidth, visionWidth, playerX, playerY) => {
-  const xTile = Math.floor(playerX / 100);
-  const yTile = Math.floor(playerY / 100);
-  // console.log(playerX + ',' + playerY);
-  // console.log(
-  //   Math.round(playerX) + ',' + Math.round(playerY) + ':' + xTile + ',' + yTile
-  // );
+const drawBackground = (p) => {
+  let { playerPos } = store.getState();
+  let { playerX, playerY } = playerPos;
+  const playerMapCol = Math.floor(playerX / 100);
+  const playerMapRow = Math.floor(playerY / 100);
   p.background('black');
+
+  // Set the center of the screen
+  SetCameraCenter(playerX, playerY);
+
   let curMap = DummyMap;
-  curMap.forEach((row, mapX) => {
-    // console.log(mapX);
-    row.forEach((mapElement, mapY) => {
-      // console.log(xTile, yTile, mapX, mapY);
+  curMap.forEach((row, mapTileRow) => {
+    row.forEach((mapElement, mapTileCol) => {
       if (
-        mapX <= xTile + 3 &&
-        mapX >= xTile - 3 &&
-        mapY <= yTile + 3 &&
-        mapY >= yTile - 3
+        mapTileRow <= playerMapRow + 12 &&
+        mapTileRow >= playerMapRow - 12 &&
+        mapTileCol <= playerMapCol + 12 &&
+        mapTileCol >= playerMapCol - 12
       ) {
-        RenderMapTile(
-          p,
-          visionWidth,
-          playerWidth,
-          xTile - mapX,
-          yTile - mapY,
-          (playerX % 100) / 100,
-          (playerY % 100) / 100,
-          mapElement
-        );
+        RenderMapTile(p, mapTileCol, mapTileRow, mapElement);
       }
     });
   });

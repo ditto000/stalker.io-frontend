@@ -18,3 +18,31 @@ export const updateResolution = (payload) => {
     payload,
   };
 };
+
+export const updateKeyPositions = (payload) => {
+  return {
+    type: 'UPDATE_KEY_POS',
+    payload,
+  };
+};
+
+export const updatePlayerList = (payload) => {
+  return {
+    type: 'UPDATE_PLAYER_LIST',
+    payload,
+  };
+};
+
+export const updatePlayerId = (payload) => {
+  return {
+    type: 'PLAYER_CONNECTION',
+    payload,
+  };
+};
+
+export const updatePlayerLocation = (payload) => {
+  return {
+    type: 'PLAYER_POSITION',
+    payload,
+  };
+};
