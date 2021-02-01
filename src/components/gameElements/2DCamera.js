@@ -6,7 +6,6 @@ let cameraY = 0;
 const SetCameraCenter = (worldX, worldY) => {
   cameraX = worldX;
   cameraY = worldY;
-  console.log(cameraX + ' cam ' + cameraY);
 };
 
 let res = () => store.getState().res;

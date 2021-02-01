@@ -9,7 +9,7 @@ import { WorldToScreen } from './2DCamera';
  * @param {*} tileType type of tile from the map
  */
 const RenderMapTile = (p, tileCol, tileRow, tileType) => {
-  let { playerWidth, res, tileWidth } = store.getState();
+  let { tileWidth } = store.getState();
   p.push();
   switch (tileType) {
     case 0:
