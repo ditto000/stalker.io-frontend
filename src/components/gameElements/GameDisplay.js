@@ -25,8 +25,6 @@ class GameDisplay extends Component {
     this.props.updateResolution({
       width: window.innerWidth,
       height: window.innerHeight,
-      visionWidth: window.innerHeight,
-      playerWidth: window.innerHeight / 30,
     });
   };
   Sketch = (p) => {

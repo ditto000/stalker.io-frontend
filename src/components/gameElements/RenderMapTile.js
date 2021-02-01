@@ -1,5 +1,5 @@
 import store from '../../store';
-import {ScreenPosition } from './2DCamera';
+import { ScreenPosition } from './2DCamera';
 
 /**
  *
@@ -22,12 +22,8 @@ const RenderMapTile = (p, tileCol, tileRow, tileType) => {
       p.fill('white');
   }
   p.noStroke();
-  let [x, y] = ScreenPosition(tileCol * tileWidth, tileRow * tileWidth);
-  p.rect(
-    x,
-    y,
-    tileWidth + 1
-  );
+  let [x, y] = ScreenPosition(tileCol * 100, tileRow * 100);
+  p.rect(x, y, tileWidth + 1);
   p.pop();
 };
 

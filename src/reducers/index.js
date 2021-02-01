@@ -26,7 +26,7 @@ const updateResolution = (state = null, action) => {
 const updateVisionWidth = (state = 0, action) => {
   switch (action.type) {
     case 'UPDATE_RESOLUTION':
-      return action.payload.visionWidth;
+      return action.payload.height;
     default:
       return state;
   }
@@ -35,7 +35,7 @@ const updateVisionWidth = (state = 0, action) => {
 const updatePlayerWidth = (state = 0, action) => {
   switch (action.type) {
     case 'UPDATE_RESOLUTION':
-      return action.payload.playerWidth;
+      return action.payload.height / 30;
     default:
       return state;
   }
@@ -44,7 +44,7 @@ const updatePlayerWidth = (state = 0, action) => {
 const updateTileWidth = (state = 0, action) => {
   switch (action.type) {
     case 'UPDATE_RESOLUTION':
-      return action.payload.visionWidth / 10;
+      return action.payload.height / 10;
     default:
       return state;
   }
