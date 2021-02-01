@@ -3,12 +3,12 @@ import drawCharacter from './DrawCharacter';
 
 let drawEntities = (p) => {
   let { res, playerWidth, playerList, playerID } = store.getState();
-  const baseX = (res.width - playerWidth) / 2;
-  const baseY = (res.height - playerWidth) / 2;
+  const centerX = (res.width - playerWidth) / 2;
+  const centerY = (res.height - playerWidth) / 2;
   // Draws player
   p.push();
   p.fill('blue');
-  p.rect(baseX, baseY, playerWidth);
+  p.rect(centerX, centerY, playerWidth);
   p.pop();
   // display other entities
   playerList.forEach((player) => {
