@@ -10,6 +10,7 @@ import {
   updatePlayerLocation,
 } from '../../actions';
 import updateMovement from './Movement';
+import { ScreenToWorld } from './2DCamera';
 
 import socket from '../socket';
 import drawEntities from './DrawEntites';
@@ -118,6 +119,9 @@ class GameDisplay extends Component {
     this.myP5.remove();
     socket.off();
   }
+  // testScreenToWorld = (e) => {
+  //   console.log(ScreenToWorld(e.pageX, e.pageY));
+  // };
 
   render() {
     return (
@@ -126,6 +130,7 @@ class GameDisplay extends Component {
           ref={this.canvasRef}
           onKeyDown={this.checkKeyEvents}
           onKeyUp={this.checkKeyEvents}
+          // onMouseDown={this.testScreenToWorld}
           tabIndex={0}
         />
       </div>
