@@ -1,15 +1,17 @@
 import store from '../../store';
-import {ScreenPosition } from './2DCamera';
-
 /**
  *
  * @param {*} p instance of p5.js
- * @param {*} tileX map x of tile
- * @param {*} tileY map y of tile
+ * @param {*} relPosX relative x coordinate of tile
+ * @param {*} relPosY relative y coordinate of tile
+ * @param {*} offsetX x offset that tile should be rendered in as a percentage
+ * @param {*} offsetY y offset that tile should be rendered in as a percentage
  * @param {*} tileType type of tile from the map
  */
-const RenderMapTile = (p, tileCol, tileRow, tileType) => {
+const RenderMapTile = (p, relPosX, relPosY, offsetX, offsetY, tileType) => {
   let { playerWidth, res, tileWidth } = store.getState();
+  const baseX = (res.width - playerWidth) / 2;
+  const baseY = (res.height - playerWidth) / 2;
   p.push();
   switch (tileType) {
     case 0:
@@ -22,10 +24,9 @@ const RenderMapTile = (p, tileCol, tileRow, tileType) => {
       p.fill('white');
   }
   p.noStroke();
-  let [x, y] = ScreenPosition(tileCol * tileWidth, tileRow * tileWidth);
   p.rect(
-    x,
-    y,
+    baseX - relPosX * tileWidth - offsetX * tileWidth,
+    baseY - relPosY * tileWidth - offsetY * tileWidth,
     tileWidth + 1
   );
   p.pop();
