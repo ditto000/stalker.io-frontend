@@ -1,14 +1,14 @@
 import store from '../../store';
+import {ScreenPosition } from './2DCamera';
 
-let drawCharacter = (p, x, y) => {
+let drawCharacter = (p, playerx, playery) => {
   let { res, playerWidth, playerPos, tileWidth } = store.getState();
   const baseX = (res.width - playerWidth) / 2;
   const baseY = (res.height - playerWidth) / 2;
-  let otherX = baseX + ((x - playerPos.playerX) / 100) * tileWidth;
-  let otherY = baseY + ((y - playerPos.playerY) / 100) * tileWidth;
+  let [x, y] = ScreenPosition(playerx, playery);
   p.push();
   p.fill('cyan');
-  p.rect(otherX, otherY, playerWidth);
+  p.rect(x, y, playerWidth);
   p.pop();
 };
 
