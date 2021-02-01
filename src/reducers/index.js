@@ -50,6 +50,15 @@ const updateTileWidth = (state = 0, action) => {
   }
 };
 
+const updateRatio = (state = 0, action) => {
+  switch (action.type) {
+    case 'UPDATE_RESOLUTION':
+      return action.payload.height / 1000;
+    default:
+      return state;
+  }
+};
+
 const updateKeyPositions = (
   state = { w: false, a: false, s: false, d: false },
   action
@@ -104,4 +113,5 @@ export default combineReducers({
   playerList: updatePlayerState,
   playerID: getPlayerID,
   playerPos: updatePlayerPos,
+  scalingRatio: updateRatio,
 });

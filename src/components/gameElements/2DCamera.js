@@ -4,17 +4,27 @@ let cameraX = 0;
 let cameraY = 0;
 
 const SetCameraCenter = (worldX, worldY) => {
-    cameraX = worldX;
-    cameraY = worldY;
-    console.log(cameraX +" cam " + cameraY)
-}
+  cameraX = worldX;
+  cameraY = worldY;
+  console.log(cameraX + ' cam ' + cameraY);
+};
 
 let res = () => store.getState().res;
 
+let scalingRatio = () => store.getState().scalingRatio;
+
 // Take screen postion and return world position.
-const WorldPosition = (screenX, screenY) => [screenX + (cameraX - res().width / 2), screenY + (cameraY - res().height / 2)];
+const ScreenToWorld = (screenX, screenY) => [
+  screenX / scalingRatio() + (cameraX - res().width / 2 / scalingRatio()),
+  screenY / scalingRatio() + (cameraY - res().height / 2 / scalingRatio()),
+];
 
 // Take world position and return screen position.
-const ScreenPosition = (worldX, worldY) => [worldX + (res().width / 2 - cameraX), worldY + (res().height / 2 - cameraY)];
+const WorldToScreen = (worldX, worldY) => [
+  worldX * scalingRatio() + (res().width / 2 - cameraX * scalingRatio()),
+  worldY * scalingRatio() + (res().height / 2 - cameraY * scalingRatio()),
+];
 
-export {SetCameraCenter, WorldPosition, ScreenPosition}
+export { SetCameraCenter, ScreenToWorld, WorldToScreen };
+
+// scale = R/r
