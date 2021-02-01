@@ -10,7 +10,7 @@ import {
   updatePlayerLocation,
 } from '../../actions';
 import updateMovement from './Movement';
-import { ScreenToWorld } from './2DCamera';
+// import { ScreenToWorld } from './2DCamera';
 
 import socket from '../socket';
 import drawEntities from './DrawEntites';
