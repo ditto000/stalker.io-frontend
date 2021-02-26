@@ -4,7 +4,7 @@ import socket from '../socket';
 let updateMovement = () => {
   let dirX = 0;
   let dirY = 0;
-  let { keysDown } = store.getState();
+  let { keysDown, playerPos } = store.getState();
   for (let element in keysDown) {
     switch (element) {
       case 'w':
@@ -24,7 +24,9 @@ let updateMovement = () => {
     }
   }
 
-  socket.emit('movement', { dirX: dirX, dirY: dirY });
+  let newPos = { x: playerPos.playerX+dirX*10, y: playerPos.playerY+dirY*10 };
+
+  socket.emit('movement', newPos);
 };
 
 export default updateMovement;

@@ -3,7 +3,7 @@ import store from '../store';
 import { updatePlayerId } from '../actions';
 
 // const socket = io('http://localhost:9000');
-const socket = io('https://node-stalker-io.herokuapp.com/');
+const socket = io('http://localhost:9000');
 
 socket.on('connect', () => {
   console.log('Connected');
