@@ -9,7 +9,7 @@ import {
   updatePlayerList,
   updatePlayerLocation,
 } from '../../actions';
-import updateMovement from './Movement';
+import GameUpdate from './GameUpdate';
 // import { ScreenToWorld } from './2DCamera';
 
 import socket from '../socket';
@@ -19,6 +19,7 @@ class GameDisplay extends Component {
   constructor(props) {
     super(props);
 
+    this.GameUpdate = new GameUpdate();
     this.canvasRef = React.createRef();
   }
   updateSetInterval = null;
@@ -93,7 +94,6 @@ class GameDisplay extends Component {
         pressed: false,
       });
     }
-    updateMovement();
   };
   componentDidMount() {
     socket.emit('join', 'test');

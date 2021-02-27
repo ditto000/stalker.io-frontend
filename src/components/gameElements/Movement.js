@@ -1,5 +1,4 @@
 import store from '../../store';
-import socket from '../socket';
 
 let updateMovement = () => {
   let dirX = 0;
@@ -26,7 +25,7 @@ let updateMovement = () => {
 
   let newPos = { x: playerPos.playerX+dirX*10, y: playerPos.playerY+dirY*10 };
 
-  socket.emit('movement', newPos);
+  return newPos;
 };
 
 export default updateMovement;
