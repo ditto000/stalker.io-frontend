@@ -9,7 +9,6 @@ import {
   updatePlayerList,
   updatePlayerLocation,
 } from '../../actions';
-import GameUpdate from './GameUpdate';
 // import { ScreenToWorld } from './2DCamera';
 
 import socket from '../socket';
@@ -19,7 +18,6 @@ class GameDisplay extends Component {
   constructor(props) {
     super(props);
 
-    this.GameUpdate = new GameUpdate();
     this.canvasRef = React.createRef();
   }
   updateSetInterval = null;
@@ -99,14 +97,6 @@ class GameDisplay extends Component {
     socket.emit('join', 'test');
     socket.on('gameUpdate', (players) => {
       this.props.updatePlayerList(players);
-      players.forEach((player) => {
-        if (player.id === socket.id) {
-          this.props.updatePlayerLocation({
-            playerX: player.pos.x,
-            playerY: player.pos.y,
-          });
-        }
-      });
     });
 
     this.handleResize();

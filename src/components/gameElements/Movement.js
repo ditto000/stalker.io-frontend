@@ -23,7 +23,7 @@ let updateMovement = () => {
     }
   }
 
-  let newPos = { x: playerPos.playerX+dirX*10, y: playerPos.playerY+dirY*10 };
+  let newPos = { playerX: playerPos.playerX+dirX*10, playerY: playerPos.playerY+dirY*10 };
 
   return newPos;
 };
