@@ -11,7 +11,6 @@ import {
 } from '../../actions';
 // import { ScreenToWorld } from './2DCamera';
 
-import socket from '../socket';
 import drawEntities from './DrawEntites';
 
 class GameDisplay extends Component {
@@ -94,11 +93,6 @@ class GameDisplay extends Component {
     }
   };
   componentDidMount() {
-    socket.emit('join', 'test');
-    socket.on('gameUpdate', (data) => {
-      this.props.updatePlayerList(data.playerList);
-    });
-
     this.handleResize();
     this.myP5 = new p5(this.Sketch, this.canvasRef.current);
     window.addEventListener('resize', this.handleResize);
@@ -107,7 +101,7 @@ class GameDisplay extends Component {
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize);
     this.myP5.remove();
-    socket.off();
+    
   }
   // testScreenToWorld = (e) => {
   //   console.log(ScreenToWorld(e.pageX, e.pageY));
