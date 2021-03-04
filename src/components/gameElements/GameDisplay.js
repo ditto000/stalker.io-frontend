@@ -95,8 +95,8 @@ class GameDisplay extends Component {
   };
   componentDidMount() {
     socket.emit('join', 'test');
-    socket.on('gameUpdate', (players) => {
-      this.props.updatePlayerList(players);
+    socket.on('gameUpdate', (data) => {
+      this.props.updatePlayerList(data.playerList);
     });
 
     this.handleResize();
